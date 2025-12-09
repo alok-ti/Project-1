@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #0055aa, #00aaff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-container {
+    text-align: center;
+    color: white;
+    background: rgba(0,0,0,0.3);
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.welcome-container h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.button-group {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.login {
+    background: #003d80;
+}
+
+.signup {
+    background: #00cc66;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}

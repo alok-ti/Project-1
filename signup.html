@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<link rel="stylesheet" href="styles/style.css">
+<link rel="icon" type="image/png" href="images/images-removebg-preview.png">
+</head>
+<body>
+
+<div class="signup-container">
+    <h2>Create Account</h2>
+    <form onsubmit="return registerUser()">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+        
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Create a password" required>
+        
+        <label>Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+        
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <p id="error" style="color:red;"></p>
+    <p id="success" style="color:green;"></p>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+
+<script>
+function registerUser() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    const errorEl = document.getElementById("error");
+    const successEl = document.getElementById("success");
+    errorEl.innerText = "";
+    successEl.innerText = "";
+
+    if (password !== confirmPassword) {
+        errorEl.innerText = "Passwords do not match!";
+        return false;
+    }
+
+    // Save user in localStorage
+    const user = { name, email, password };
+    localStorage.setItem("userData", JSON.stringify(user));
+    successEl.innerText = "Account created successfully! You can now login.";
+    
+    // Optionally, redirect after a short delay
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 1000);
+
+    return false; // prevent form refresh
+}
+</script>
+
+</body>
+</html>

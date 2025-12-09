@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academics - Student Portal</title>
+<link rel="stylesheet" href="styles/style.css">
+<link rel="icon" type="image/png" href="images/images-removebg-preview.png">
+<style>
+    .academics-container {
+        max-width: 900px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    table th, table td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    table th {
+        background-color: #e6f0ff;
+    }
+    .status.completed { color: green; font-weight: bold; }
+    .status.pending { color: orange; font-weight: bold; }
+    .download a { text-decoration: none; color: #003d80; font-weight: bold; }
+    .download a:hover { color: #0055aa; }
+    .add-form { margin-top: 20px; background: #f0f8ff; padding: 10px; border-radius: 8px; }
+    .add-form input { margin: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    .add-form button { padding: 5px 10px; border-radius: 5px; background-color: #0055aa; color: white; border: none; cursor: pointer; }
+    .add-form button:hover { background-color: #004080; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Academics</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="academics.html">Academics</a>
+        <a href="attendance.html">Attendance</a>
+        <a href="results.html">Results</a>
+        <button id="logoutBtn">Logout</button>
+    </nav>
+</header>
+
+<div class="academics-container">
+    <h2>Academics Dashboard</h2>
+    
+    <!-- Courses Section -->
+    <h3>Courses</h3>
+    <table id="coursesTable">
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Professor</th>
+                <th>Materials</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    
+    <div class="add-form">
+        <h4>Add New Course</h4>
+        <input type="text" id="newCourseCode" placeholder="Course Code">
+        <input type="text" id="newCourseName" placeholder="Course Name">
+        <input type="text" id="newCourseProf" placeholder="Professor">
+        <input type="text" id="newCourseMaterial" placeholder="Material URL">
+        <button onclick="addCourse()">Add Course</button>
+    </div>
+
+    <!-- Assignments Section -->
+    <h3>Assignments</h3>
+    <table id="assignmentsTable">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Assignment</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="add-form">
+        <h4>Add New Assignment</h4>
+        <input type="text" id="newAssignCourse" placeholder="Course Name">
+        <input type="text" id="newAssignTitle" placeholder="Assignment Title">
+        <input type="date" id="newAssignDue">
+        <select id="newAssignStatus">
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <button onclick="addAssignment()">Add Assignment</button>
+    </div>
+
+    <!-- Grades Section -->
+    <h3>Grades</h3>
+    <table id="gradesTable">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Assignment</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="add-form">
+        <h4>Add Grade</h4>
+        <input type="text" id="newGradeCourse" placeholder="Course Name">
+        <input type="text" id="newGradeAssign" placeholder="Assignment">
+        <input type="text" id="newGrade" placeholder="Grade (e.g. A, B+)">
+        <button onclick="addGrade()">Add Grade</button>
+    </div>
+
+</div>
+
+<script>
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    });
+
+    // Load stored data or use defaults
+    let courses = JSON.parse(localStorage.getItem("courses")) || [
+        { code: "PHY101", name: "Physics", prof: "Dr. Smith", material: "notes/physics.pdf" }
+    ];
+    let assignments = JSON.parse(localStorage.getItem("assignments")) || [
+        { course: "Physics", title: "Homework 1", due: "2025-12-15", status: "Completed" }
+    ];
+    let grades = JSON.parse(localStorage.getItem("grades")) || [
+        { course: "Physics", assignment: "Homework 1", grade: "A" }
+    ];
+
+    // Functions to render tables
+    function renderCourses() {
+        const tbody = document.getElementById("coursesTable").getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+        courses.forEach(c => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = c.code;
+            row.insertCell(1).innerText = c.name;
+            row.insertCell(2).innerText = c.prof;
+            const matCell = row.insertCell(3);
+            matCell.className = "download";
+            matCell.innerHTML = `<a href="${c.material}" target="_blank">Download</a>`;
+        });
+    }
+
+    function renderAssignments() {
+        const tbody = document.getElementById("assignmentsTable").getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+        assignments.forEach(a => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = a.course;
+            row.insertCell(1).innerText = a.title;
+            row.insertCell(2).innerText = a.due;
+            const statusCell = row.insertCell(3);
+            statusCell.innerText = a.status;
+            statusCell.className = a.status.toLowerCase();
+        });
+    }
+
+    function renderGrades() {
+        const tbody = document.getElementById("gradesTable").getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+        grades.forEach(g => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = g.course;
+            row.insertCell(1).innerText = g.assignment;
+            row.insertCell(2).innerText = g.grade;
+        });
+    }
+
+    // Add new entries
+    function addCourse() {
+        const code = document.getElementById("newCourseCode").value;
+        const name = document.getElementById("newCourseName").value;
+        const prof = document.getElementById("newCourseProf").value;
+        const material = document.getElementById("newCourseMaterial").value;
+        if (!code || !name || !prof) return alert("Please fill all required fields");
+        courses.push({ code, name, prof, material });
+        localStorage.setItem("courses", JSON.stringify(courses));
+        renderCourses();
+        document.getElementById("newCourseCode").value = "";
+        document.getElementById("newCourseName").value = "";
+        document.getElementById("newCourseProf").value = "";
+        document.getElementById("newCourseMaterial").value = "";
+    }
+
+    function addAssignment() {
+        const course = document.getElementById("newAssignCourse").value;
+        const title = document.getElementById("newAssignTitle").value;
+        const due = document.getElementById("newAssignDue").value;
+        const status = document.getElementById("newAssignStatus").value;
+        if (!course || !title || !due) return alert("Please fill all required fields");
+        assignments.push({ course, title, due, status });
+        localStorage.setItem("assignments", JSON.stringify(assignments));
+        renderAssignments();
+        document.getElementById("newAssignCourse").value = "";
+        document.getElementById("newAssignTitle").value = "";
+        document.getElementById("newAssignDue").value = "";
+    }
+
+    function addGrade() {
+        const course = document.getElementById("newGradeCourse").value;
+        const assign = document.getElementById("newGradeAssign").value;
+        const grade = document.getElementById("newGrade").value;
+        if (!course || !assign || !grade) return alert("Please fill all required fields");
+        grades.push({ course, assignment: assign, grade });
+        localStorage.setItem("grades", JSON.stringify(grades));
+        renderGrades();
+        document.getElementById("newGradeCourse").value = "";
+        document.getElementById("newGradeAssign").value = "";
+        document.getElementById("newGrade").value = "";
+    }
+
+    // Initial render
+    renderCourses();
+    renderAssignments();
+    renderGrades();
+</script>
+
+</body>
+</html>

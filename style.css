@@ -1,0 +1,177 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+header {
+    background: #0055aa;
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+nav {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background-color: #004080;
+}
+
+#logoutBtn {
+    padding: 6px 12px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#logoutBtn:hover {
+    background-color: #e60000;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+h2 {
+    color: #0055aa;
+    text-align: center;
+}
+
+h3 {
+    color: #003d80;
+    margin-top: 20px;
+}
+
+p {
+    line-height: 1.6;
+}
+
+ul.card {
+    list-style: none;
+    padding: 0;
+}
+
+ul.card li {
+    background: #e6f0ff;
+    margin: 8px 0;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+/* Profile Card Styles */
+.profile-card {
+    background: #e6f0ff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-card h3 {
+    margin-top: 0;
+    color: #0055aa;
+}
+
+.profile-card p {
+    margin: 8px 0;
+}
+
+.quick-links {
+    margin-top: 10px;
+}
+
+.quick-links a {
+    display: inline-block;
+    margin-right: 12px;
+    text-decoration: none;
+    color: #003d80;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.quick-links a:hover {
+    color: #0055aa;
+}
+
+/* Signup & Login Containers */
+.signup-container, .login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.signup-container input, .login-container input {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.signup-container button, .login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0055aa;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.signup-container button:hover, .login-container button:hover {
+    background-color: #004080;
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    background: #222;
+    padding: 15px;
+    text-align: center;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+    header h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}

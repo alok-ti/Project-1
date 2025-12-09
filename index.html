@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal - Home</title>
+<link rel="stylesheet" href="styles/style.css">
+<link rel="icon" type="image/png" href="images/images-removebg-preview.png">
+
+</head>
+<body>
+
+<header>
+    <h1>Student Life Portal</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="academics.html">Academics</a>
+        <a href="attendance.html">Attendance</a>
+        <a href="events.html">Events</a>
+        <a href="results.html">Results</a>
+        <a href="contact.html">Contact</a>
+        <a href="studentinquiry.html">Inquiry</a>
+        <a href="college.html">College</a>
+        <a href="about.html">About Student</a>
+        <button id="logoutBtn">Logout</button>
+    </nav>
+</header>
+
+<section class="container">
+    <h2>Welcome Students 👋</h2>
+    <p>This portal provides all essential tools and features that a student needs for their academic life.</p>
+
+    <div class="profile-card">
+        <h3>Student Profile</h3>
+        <p><strong>Name:</strong> <span id="studentName"></span></p>
+        <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+        <div class="quick-links">
+            <a href="academics.html">📘 Academics</a>
+            <a href="attendance.html">📊 Attendance</a>
+            <a href="results.html">🏆 Results</a>
+            <a href="events.html">🎉 Events</a>
+        </div>
+    </div>
+
+    <h3>Latest Announcements</h3>
+    <ul class="card">
+        <li>📢 Mid-term exams start from March 12.</li>
+        <li>📘 New notes uploaded for Physics.</li>
+        <li>🏆 Sports Week registration now open.</li>
+        <li>💼 Placement drive on 25th March.</li>
+    </ul>
+</section>
+
+<footer>
+    © 2025 Student Portal | All Rights Reserved by The Great ALOK
+</footer>
+
+<script>
+    // Get logged-in user
+    let user = JSON.parse(localStorage.getItem("loggedInUser")) || null;
+
+    if (!user) {
+        window.location.href = "login.html";
+    }
+
+    document.querySelector("header h1").innerText = `Student Life Portal - Welcome, ${user.name}`;
+    document.getElementById("studentName").innerText = user.name;
+    document.getElementById("studentEmail").innerText = user.email;
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    });
+</script>
+
+</body>
+</html>

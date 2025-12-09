@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - Student Portal</title>
+<link rel="stylesheet" href="styles/style.css">
+<link rel="icon" type="image/png" href="images/images-removebg-preview.png">
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .profile-container h2 {
+        color: #0055aa;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 2px solid #0055aa;
+    }
+
+    .profile-item {
+        margin: 15px 0;
+        text-align: left;
+    }
+
+    .profile-item label {
+        font-weight: bold;
+    }
+
+    .profile-item span {
+        margin-left: 10px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+        padding: 5px;
+        margin-top: 5px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .edit-btn, .save-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0055aa;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .edit-btn:hover, .save-btn:hover {
+        background-color: #004080;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Profile</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="academics.html">Academics</a>
+        <a href="results.html">Results</a>
+        <button id="logoutBtn">Logout</button>
+    </nav>
+</header>
+
+<div class="profile-container">
+    <h2>Your Profile</h2>
+
+    <!-- Profile Picture -->
+    <img src="" alt="Profile Picture" id="profilePic" class="profile-pic">
+    <input type="file" id="profilePicInput" style="display:none;" accept="image/*">
+
+    <!-- Name -->
+    <div class="profile-item">
+        <label>Name:</label>
+        <span id="profileName"></span>
+        <input type="text" id="editName" style="display:none;">
+    </div>
+
+    <!-- Email -->
+    <div class="profile-item">
+        <label>Email:</label>
+        <span id="profileEmail"></span>
+        <input type="email" id="editEmail" style="display:none;">
+    </div>
+
+    <!-- Password -->
+    <div class="profile-item">
+        <label>Password:</label>
+        <span id="profilePassword">********</span>
+        <input type="password" id="editPassword" style="display:none;">
+    </div>
+
+    <button class="edit-btn" id="editProfileBtn">Edit Profile</button>
+    <button class="save-btn" id="saveProfileBtn" style="display:none;">Save Changes</button>
+</div>
+
+<script>
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    });
+
+    // Get logged-in user
+    let user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+        window.location.href = "login.html";
+    }
+
+    const profilePic = document.getElementById("profilePic");
+    const profilePicInput = document.getElementById("profilePicInput");
+
+    // Load profile data
+    function loadProfile() {
+        document.getElementById("profileName").innerText = user.name;
+        document.getElementById("profileEmail").innerText = user.email;
+        document.getElementById("editName").value = user.name;
+        document.getElementById("editEmail").value = user.email;
+        document.getElementById("editPassword").value = user.password;
+
+        // Load profile picture or default
+        profilePic.src = user.profilePic || "https://via.placeholder.com/120";
+    }
+
+    loadProfile();
+
+    // Edit profile button
+    document.getElementById("editProfileBtn").addEventListener("click", function() {
+        document.getElementById("profileName").style.display = "none";
+        document.getElementById("profileEmail").style.display = "none";
+        document.getElementById("profilePassword").style.display = "none";
+
+        document.getElementById("editName").style.display = "block";
+        document.getElementById("editEmail").style.display = "block";
+        document.getElementById("editPassword").style.display = "block";
+
+        profilePicInput.style.display = "block";
+
+        document.getElementById("editProfileBtn").style.display = "none";
+        document.getElementById("saveProfileBtn").style.display = "block";
+    });
+
+    // Update profile picture preview
+    profilePicInput.addEventListener("change", function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profilePic.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Save profile
+    document.getElementById("saveProfileBtn").addEventListener("click", function() {
+        const newName = document.getElementById("editName").value;
+        const newEmail = document.getElementById("editEmail").value;
+        const newPassword = document.getElementById("editPassword").value;
+
+        if (!newName || !newEmail || !newPassword) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        // Save profile pic if uploaded
+        if (profilePicInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                user.profilePic = e.target.result;
+                saveUser();
+            }
+            reader.readAsDataURL(profilePicInput.files[0]);
+        } else {
+            saveUser();
+        }
+
+        function saveUser() {
+            user.name = newName;
+            user.email = newEmail;
+            user.password = newPassword;
+            localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+            // Reset view
+            document.getElementById("profileName").style.display = "inline";
+            document.getElementById("profileEmail").style.display = "inline";
+            document.getElementById("profilePassword").style.display = "inline";
+
+            document.getElementById("editName").style.display = "none";
+            document.getElementById("editEmail").style.display = "none";
+            document.getElementById("editPassword").style.display = "none";
+            profilePicInput.style.display = "none";
+
+            document.getElementById("editProfileBtn").style.display = "block";
+            document.getElementById("saveProfileBtn").style.display = "none";
+
+            loadProfile();
+            alert("Profile updated successfully!");
+        }
+    });
+</script>
+
+</body>
+</html>
